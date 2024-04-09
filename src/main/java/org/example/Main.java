@@ -34,7 +34,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        GUI gui = new GUI();
+        Homepage gui = new Homepage();
         gui.setVisible(true);
     }
 }

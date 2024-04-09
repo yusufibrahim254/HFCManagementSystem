@@ -1,16 +1,15 @@
 package org.example;
-import jdk.jfr.Percentage;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GUI extends JFrame implements ActionListener{
-    public GUI(){
+public class Homepage extends JFrame{
+    public Homepage(){
         setTitle("HFC (Health and Fitness Club)");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(400,400);
+        setSize(500,400);
 
         JLabel welcomeLabel = new JLabel("Welcome to the Health and Fitness Club!");
         JLabel whatAreYouLabel = new JLabel("Which of these are you?");
@@ -30,16 +29,22 @@ public class GUI extends JFrame implements ActionListener{
         memberButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-
+                HFCMember member = new HFCMember();
 
             }
         });
-        trainerButton.addActionListener(this);
-        staffButton.addActionListener(this);
-
-    }
-    @Override
-    public void actionPerformed(ActionEvent e) {
+        trainerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("jaksdhlkajhdlkjahsdlkjash#EUNDC");
+            }
+        });
+        staffButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("JKBJKJKBJKJKJKBJKBJKBJBKJKBBJKBJK#EUNDC");
+            }
+        });
 
     }
 }
