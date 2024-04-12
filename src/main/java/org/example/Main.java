@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Main {
-    private static Connection conn;
+    public static Connection conn;
 
 
 
@@ -28,8 +28,8 @@ public class Main {
 
             } else {
                 System.out.println("Failed to establish connection.");
-            } // Close the connection (in a real scenario, do this in a finally
-            conn.close();
+            }
+
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

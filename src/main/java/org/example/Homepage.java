@@ -10,6 +10,7 @@ public class Homepage extends JFrame{
         setTitle("HFC (Health and Fitness Club)");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(500,400);
+        setLocationRelativeTo(null);
 
         JLabel welcomeLabel = new JLabel("Welcome to the Health and Fitness Club!");
         JLabel whatAreYouLabel = new JLabel("Which of these are you?");
@@ -30,6 +31,7 @@ public class Homepage extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e){
                 HFCMember member = new HFCMember();
+                member.setVisible(true);
 
             }
         });
