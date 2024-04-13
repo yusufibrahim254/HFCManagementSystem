@@ -670,6 +670,7 @@ public class HFCMember extends JFrame {
                                     JTextField purposeField = new JTextField();
                                     JButton selectTrainerButton = new JButton("Select Trainer");
                                     JButton bookSessionButton = new JButton("Book Session");
+                                    JButton cancelButton = new JButton("Cancel");
                                     int[] trainerId = new int[1];
 
                                     selectTrainerButton.addActionListener(new ActionListener() {
@@ -701,6 +702,13 @@ public class HFCMember extends JFrame {
                                         }
                                     });
 
+                                    cancelButton.addActionListener(new ActionListener() {
+                                        @Override
+                                        public void actionPerformed(ActionEvent e) {
+                                            bookSessionFrame.dispose();
+                                        }
+                                    });
+
                                     mainPanel.add(new JLabel("Start Time (HH:MM:SS):"));
                                     mainPanel.add(startTimeField);
                                     mainPanel.add(new JLabel("End Time (HH:MM:SS):"));
@@ -709,6 +717,7 @@ public class HFCMember extends JFrame {
                                     mainPanel.add(purposeField);
                                     mainPanel.add(selectTrainerButton);
                                     mainPanel.add(bookSessionButton);
+                                    mainPanel.add(cancelButton);
 
                                     bookSessionFrame.add(mainPanel);
                                     bookSessionFrame.setVisible(true);
@@ -736,12 +745,13 @@ public class HFCMember extends JFrame {
                                     availabilityFrame.setSize(500, 400);
                                     availabilityFrame.setLocationRelativeTo(null);
 
-                                    JPanel panel = new JPanel(new GridLayout(3, 2));
+                                    JPanel panel = new JPanel(new GridLayout(4, 2));
 
                                     JLabel weekdayLabel = new JLabel("Select weekday:");
                                     JComboBox<Weekday> weekdayDropdown = new JComboBox<>(Weekday.values());
 
                                     JButton setAvailabilityButton = new JButton("Set Availability");
+                                    JButton cancelButton = new JButton("Cancel");
 
                                     setAvailabilityButton.addActionListener(new ActionListener() {
                                         @Override
@@ -752,10 +762,17 @@ public class HFCMember extends JFrame {
                                             availabilityFrame.dispose();
                                         }
                                     });
+                                    cancelButton.addActionListener(new ActionListener() {
+                                        @Override
+                                        public void actionPerformed(ActionEvent e) {
+                                            availabilityFrame.dispose();
+                                        }
+                                    });
 
                                     panel.add(weekdayLabel);
                                     panel.add(weekdayDropdown);
                                     panel.add(setAvailabilityButton);
+                                    panel.add(cancelButton);
 
                                     availabilityFrame.add(panel);
                                     availabilityFrame.setVisible(true);
