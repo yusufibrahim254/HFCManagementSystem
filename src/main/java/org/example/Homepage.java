@@ -38,15 +38,16 @@ public class Homepage extends JFrame{
         trainerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("jaksdhlkajhdlkjahsdlkjash#EUNDC");
+                HFCTrainer trainer = new HFCTrainer();
+                //trainer.setVisible(true);
             }
         });
         staffButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("JKBJKJKBJKJKJKBJKBJKBJBKJKBBJKBJK#EUNDC");
+                HFCAdminStaff staff = new HFCAdminStaff();
+                //staff.setVisible(true);
             }
         });
-
     }
 }
