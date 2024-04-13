@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fabe51ac-aacf-434b-badc-c88d6f1e5dc6" name="Changes" comment="Log in and sign up ready">
+    <list default="true" id="fabe51ac-aacf-434b-badc-c88d6f1e5dc6" name="Changes" comment="exercise functions complete">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/HFCAdminStaff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/HFCAdminStaff.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/HFCMember.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/HFCMember.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/HFCTrainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/HFCTrainer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Homepage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Homepage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +91,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712963185365</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="exercise functions complete">
+      <option name="closed" value="true" />
+      <created>1713030426459</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1713030426459</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -103,6 +108,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Start" />
     <MESSAGE value="Log in and sign up ready" />
-    <option name="LAST_COMMIT_MESSAGE" value="Log in and sign up ready" />
+    <MESSAGE value="exercise functions complete" />
+    <option name="LAST_COMMIT_MESSAGE" value="exercise functions complete" />
   </component>
 </project>

@@ -565,7 +565,35 @@ public class HFCMember extends JFrame {
                             fitnessAchievements.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
+                                    String achievements = getAchievements();
+                                    if (!achievements.isEmpty()) {
+                                        JFrame achievementFrame = new JFrame("Achievements");
+                                        achievementFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                                        achievementFrame.setSize(500, 400);
+                                        achievementFrame.setLocationRelativeTo(null);
 
+                                        JPanel mainPanel = new JPanel(new BorderLayout());
+                                        JTextArea achievementsTextArea = new JTextArea(achievements);
+                                        achievementsTextArea.setEditable(false);
+                                        JScrollPane scrollPane = new JScrollPane(achievementsTextArea);
+
+                                        mainPanel.add(scrollPane, BorderLayout.CENTER);
+                                        achievementFrame.add(mainPanel, BorderLayout.CENTER);
+                                        achievementFrame.setVisible(true);
+
+                                        JPanel buttonPanel = new JPanel(new BorderLayout());
+                                        JButton closeButton = new JButton("Close");
+                                        closeButton.addActionListener(new ActionListener() {
+                                            @Override
+                                            public void actionPerformed(ActionEvent e) {
+                                                achievementFrame.dispose();
+                                            }
+                                        });
+                                        buttonPanel.add(closeButton);
+                                        achievementFrame.add(buttonPanel, BorderLayout.SOUTH);
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "No achievements found.");
+                                    }
                                 }
                             });
 
@@ -789,6 +817,23 @@ public class HFCMember extends JFrame {
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error removing workout routine: " + e.getMessage());
+        }
+    }
+
+    public static String getAchievements() {
+        String SQL = "SELECT Achievement FROM Achievements WHERE MemberID = ?";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            pstmt.setInt(1, HFCMember.memberID);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("Achievement");
+            } else {
+                return "";
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            return "";
         }
     }
 }
