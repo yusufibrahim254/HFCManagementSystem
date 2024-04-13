@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fabe51ac-aacf-434b-badc-c88d6f1e5dc6" name="Changes" comment="Fitness achievements done">
+    <list default="true" id="fabe51ac-aacf-434b-badc-c88d6f1e5dc6" name="Changes" comment="Health Statistics done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/HFCMember.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/HFCMember.java" afterDir="false" />
     </list>
@@ -107,7 +107,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713031980190</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Health Statistics done">
+      <option name="closed" value="true" />
+      <created>1713033098976</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1713033098976</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -118,6 +126,7 @@
     <MESSAGE value="Log in and sign up ready" />
     <MESSAGE value="exercise functions complete" />
     <MESSAGE value="Fitness achievements done" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fitness achievements done" />
+    <MESSAGE value="Health Statistics done" />
+    <option name="LAST_COMMIT_MESSAGE" value="Health Statistics done" />
   </component>
 </project>

@@ -4,11 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class HFCMember extends JFrame {
     private static int memberID;
@@ -660,13 +658,73 @@ public class HFCMember extends JFrame {
                             bookSession.addActionListener(new ActionListener(){
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    // Add action for viewing health statistics
+                                    JFrame bookSessionFrame = new JFrame("Book a Session");
+                                    bookSessionFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                                    bookSessionFrame.setSize(500, 400);
+                                    bookSessionFrame.setLocationRelativeTo(null);
+
+                                    JPanel mainPanel = new JPanel(new GridLayout(0, 1));
+
+                                    JTextField startTimeField = new JTextField();
+                                    JTextField endTimeField = new JTextField();
+                                    JTextField purposeField = new JTextField();
+                                    JButton selectTrainerButton = new JButton("Select Trainer");
+                                    JButton bookSessionButton = new JButton("Book Session");
+                                    int[] trainerId = new int[1];
+
+                                    selectTrainerButton.addActionListener(new ActionListener() {
+                                        @Override
+                                        public void actionPerformed(ActionEvent e) {
+                                            ArrayList<String> trainers = getTrainers();
+
+                                            JComboBox<String> trainerDropdown = new JComboBox<>(trainers.toArray(new String[0]));
+
+                                            int result = JOptionPane.showConfirmDialog(null, trainerDropdown, "Select Trainer", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                                            if (result == JOptionPane.OK_OPTION) {
+                                                String selectedTrainer = (String) trainerDropdown.getSelectedItem();
+                                                trainerId[0] = Integer.parseInt(selectedTrainer.substring(selectedTrainer.indexOf("TrainerID: ") + 11, selectedTrainer.indexOf(",")));
+                                            }
+                                        }
+                                    });
+
+                                    bookSessionButton.addActionListener(new ActionListener() {
+                                        @Override
+                                        public void actionPerformed(ActionEvent e) {
+
+                                            Time startTime = Time.valueOf(startTimeField.getText());
+                                            Time endTime = Time.valueOf(endTimeField.getText());
+                                            String purpose = purposeField.getText();
+
+                                            bookSession(trainerId[0], startTime, endTime, purpose);
+                                            JOptionPane.showMessageDialog(null, "Session booked successfully!");
+                                            bookSessionFrame.dispose();
+                                        }
+                                    });
+
+                                    mainPanel.add(new JLabel("Start Time (HH:MM:SS):"));
+                                    mainPanel.add(startTimeField);
+                                    mainPanel.add(new JLabel("End Time (HH:MM:SS):"));
+                                    mainPanel.add(endTimeField);
+                                    mainPanel.add(new JLabel("Purpose:"));
+                                    mainPanel.add(purposeField);
+                                    mainPanel.add(selectTrainerButton);
+                                    mainPanel.add(bookSessionButton);
+
+                                    bookSessionFrame.add(mainPanel);
+                                    bookSessionFrame.setVisible(true);
                                 }
                             });
                             viewSession.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
+                                    ArrayList<String> sessions = getSessions();
 
+                                    StringBuilder sessionInfo = new StringBuilder();
+                                    for (String session : sessions) {
+                                        sessionInfo.append(session).append("\n");
+                                    }
+
+                                    JOptionPane.showMessageDialog(null, sessionInfo.toString(), "User Sessions", JOptionPane.PLAIN_MESSAGE);
                                 }
                             });
 
@@ -888,5 +946,66 @@ public class HFCMember extends JFrame {
             System.out.println(e);
             return "";
         }
+    }
+
+    public static void bookSession( int trainerId, Time startTime, Time endTime, String purpose) {
+        String SQL = "INSERT INTO Sessions (MemberID, TrainerID, StartTime, EndTime, Purpose) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            pstmt.setInt(1, HFCMember.memberID);
+            pstmt.setInt(2, trainerId);
+            pstmt.setTime(3, startTime);
+            pstmt.setTime(4, endTime);
+            pstmt.setString(5, purpose);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    public static ArrayList<String> getTrainers() {
+        ArrayList<String> trainersList = new ArrayList<>();
+
+        String SQL = "SELECT TrainerID, FirstName, LastName, Specialization FROM HFCTrainer";
+        try (Statement stmt = Main.conn.createStatement();
+             ResultSet rs = stmt.executeQuery(SQL)) {
+
+            while (rs.next()) {
+                int trainerID = rs.getInt("TrainerID");
+                String firstName = rs.getString("FirstName");
+                String lastName = rs.getString("LastName");
+                String specialization = rs.getString("Specialization");
+
+                String trainerInfo = "TrainerID: " + trainerID + ", Name: " + firstName + " " + lastName + ", Specialization: " + specialization;
+                trainersList.add(trainerInfo);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return trainersList;
+    }
+
+    public static ArrayList<String> getSessions(){
+        ArrayList<String> sessions = new ArrayList<>();
+        String SQL = "SELECT * FROM Sessions";
+        try (Statement stmt = Main.conn.createStatement();
+             ResultSet rs = stmt.executeQuery(SQL)) {
+
+            while (rs.next()) {
+                int sessionID = rs.getInt("SessionID");
+                int memberID = rs.getInt("MemberID");
+                int trainerID = rs.getInt("TrainerID");
+                Time startTime = rs.getTime("StartTime");
+                Time endTime = rs.getTime("EndTime");
+                String purpose = rs.getString("Purpose");
+
+                String sessionInfo = "SessionID: " + sessionID + ", MemberID: " + memberID +
+                        ", TrainerID: " + trainerID + ", StartTime: " + startTime +
+                        ", EndTime: " + endTime + ", Purpose: " + purpose;
+                sessions.add(sessionInfo);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);;
+        }
+        return sessions;
     }
 }
