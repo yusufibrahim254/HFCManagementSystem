@@ -600,7 +600,60 @@ public class HFCMember extends JFrame {
                             healthStatistics.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    // Add action for viewing health statistics
+                                    String weightInput = JOptionPane.showInputDialog(null, "Enter your weight (in kilograms):");
+                                    if (weightInput == null) {
+                                        return;
+                                    }
+                                    double weight = Double.parseDouble(weightInput);
+
+                                    String heightInput = JOptionPane.showInputDialog(null, "Enter your height (in meters):");
+                                    if (heightInput == null) {
+                                        return;
+                                    }
+                                    double height = Double.parseDouble(heightInput);
+
+                                    double weightGoal = HFCMember.weightGoal;
+
+                                    double bmi = weight / (height * height);
+
+                                    double weightDifference = weight - weightGoal;
+                                    String progress = "";
+                                    if (weightDifference > 0) {
+                                        progress = "You are " + weightDifference + " kg away from reaching your weight goal.";
+                                    } else {
+                                        progress = "Congratulations! You have reached your weight goal.";
+                                    }
+
+                                    JPanel healthPanel = new JPanel(new BorderLayout());
+                                    healthPanel.setLayout(new GridLayout(0, 1));
+                                    JLabel weightLabel = new JLabel("Weight: " + weight + " kg");
+                                    JLabel heightLabel = new JLabel("Height: " + height + " meters");
+                                    JLabel bmiLabel = new JLabel("BMI: " + bmi);
+                                    JLabel progressLabel = new JLabel(progress);
+                                    healthPanel.add(weightLabel);
+                                    healthPanel.add(heightLabel);
+                                    healthPanel.add(bmiLabel);
+                                    healthPanel.add(progressLabel);
+
+                                    JPanel buttonPanel = new JPanel(new BorderLayout());
+                                    JButton closeButton = new JButton("Close");
+
+
+                                    JFrame healthFrame = new JFrame("Health Statistics");
+                                    healthFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                                    healthFrame.setSize(500, 400);
+                                    healthFrame.setLocationRelativeTo(null);
+                                    healthFrame.add(healthPanel, BorderLayout.CENTER);
+                                    buttonPanel.add(closeButton);
+                                    healthFrame.add(buttonPanel, BorderLayout.SOUTH);
+                                    healthFrame.setVisible(true);
+
+                                    closeButton.addActionListener(new ActionListener() {
+                                        @Override
+                                        public void actionPerformed(ActionEvent e) {
+                                            healthFrame.dispose();
+                                        }
+                                    });
                                 }
                             });
 
