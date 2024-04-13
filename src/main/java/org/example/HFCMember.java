@@ -731,7 +731,34 @@ public class HFCMember extends JFrame {
                             availabilityTool.addActionListener(new ActionListener(){
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    // Add action for viewing health statistics
+                                    JFrame availabilityFrame = new JFrame("Set Availability");
+                                    availabilityFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                                    availabilityFrame.setSize(500, 400);
+                                    availabilityFrame.setLocationRelativeTo(null);
+
+                                    JPanel panel = new JPanel(new GridLayout(3, 2));
+
+                                    JLabel weekdayLabel = new JLabel("Select weekday:");
+                                    JComboBox<Weekday> weekdayDropdown = new JComboBox<>(Weekday.values());
+
+                                    JButton setAvailabilityButton = new JButton("Set Availability");
+
+                                    setAvailabilityButton.addActionListener(new ActionListener() {
+                                        @Override
+                                        public void actionPerformed(ActionEvent e) {
+                                            Weekday selectedWeekday = (Weekday) weekdayDropdown.getSelectedItem();
+
+                                            setAvailability(selectedWeekday.toString());
+                                            availabilityFrame.dispose();
+                                        }
+                                    });
+
+                                    panel.add(weekdayLabel);
+                                    panel.add(weekdayDropdown);
+                                    panel.add(setAvailabilityButton);
+
+                                    availabilityFrame.add(panel);
+                                    availabilityFrame.setVisible(true);
                                 }
                             });
                             payBill.addActionListener(new ActionListener() {
@@ -1008,4 +1035,24 @@ public class HFCMember extends JFrame {
         }
         return sessions;
     }
+    public static void setAvailability(String weekday) {
+        String SQL = "INSERT INTO MemberAvailability (MemberID, Weekday) VALUES (?, ?)";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            pstmt.setInt(1, HFCMember.memberID);
+            pstmt.setString(2, weekday);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    public enum Weekday {
+        MONDAY,
+        TUESDAY,
+        WEDNESDAY,
+        THURSDAY,
+        FRIDAY,
+        SATURDAY,
+        SUNDAY
+    }
+
 }
