@@ -781,6 +781,30 @@ public class HFCMember extends JFrame {
                             payBill.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
+                                    double amountOwed = getBill();
+
+                                    int choice = JOptionPane.showConfirmDialog(null, "Amount owed: $" + amountOwed, "Billing Information", JOptionPane.OK_CANCEL_OPTION);
+                                    if (choice == JOptionPane.OK_OPTION) {
+                                        JPanel panel = new JPanel(new GridLayout(3, 2));
+                                        JTextField cardNumberField = new JTextField(20);
+                                        JTextField expiryDateField = new JTextField(10);
+                                        JTextField cvvField = new JTextField(3);
+
+                                        panel.add(new JLabel("Card Number:"));
+                                        panel.add(cardNumberField);
+                                        panel.add(new JLabel("Expiry Date (MM/YY):"));
+                                        panel.add(expiryDateField);
+                                        panel.add(new JLabel("CVV:"));
+                                        panel.add(cvvField);
+
+                                        int result = JOptionPane.showConfirmDialog(null, panel, "Enter Credit Card Information", JOptionPane.OK_CANCEL_OPTION);
+                                        if (result == JOptionPane.OK_OPTION) {
+                                            JOptionPane.showMessageDialog(null, "Payment successful!", "Success", JOptionPane.PLAIN_MESSAGE);
+                                        } else {
+                                            JOptionPane.showMessageDialog(null, "Payment cancelled.", "Payment Cancelled", JOptionPane.INFORMATION_MESSAGE);
+                                        }
+                                    } else {
+                                    }
 
                                 }
                             });
@@ -1004,6 +1028,14 @@ public class HFCMember extends JFrame {
         } catch (SQLException e) {
             System.out.println(e);
         }
+
+        String updateBookingSQL = "UPDATE Booking SET Description = 'Session Booking' WHERE MemberID = ?";
+        try (PreparedStatement updateBookingStmt = Main.conn.prepareStatement(updateBookingSQL)) {
+            updateBookingStmt.setInt(1, HFCMember.memberID);
+            updateBookingStmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
     public static ArrayList<String> getTrainers() {
         ArrayList<String> trainersList = new ArrayList<>();
@@ -1071,5 +1103,28 @@ public class HFCMember extends JFrame {
         SATURDAY,
         SUNDAY
     }
-
+    public static double getBill(){
+        double totalBill = 0.0;
+        String SQL = "SELECT SUM(Amount) AS TotalBill FROM Booking WHERE MemberID = ?";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            pstmt.setInt(1, HFCMember.memberID);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                totalBill = rs.getDouble("TotalBill");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return 125.50;
+    }
+    public static void payBill() {
+        String SQL = "UPDATE Booking SET Paid = true WHERE MemberID = ?";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            pstmt.setInt(1, HFCMember.memberID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 }
+
