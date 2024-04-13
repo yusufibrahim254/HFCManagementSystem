@@ -28,7 +28,7 @@ public class HFCMember extends JFrame {
 
     public HFCMember() {
         setTitle("Member Page");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(500, 400);
         setLocationRelativeTo(null);
 
@@ -817,7 +817,6 @@ public class HFCMember extends JFrame {
                         else {
                             JOptionPane.showMessageDialog(new JFrame("ERROR"), "Registration failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
                         }
-
                     }
                 });
             }
@@ -919,8 +918,6 @@ public class HFCMember extends JFrame {
                 HFCMember.timeGoal = timeGoal;
                 HFCMember.joinDate = joinDate;
 
-            } else {
-                System.out.println("Member with email " + email + " not found.");
             }
         } catch (SQLException e) {
             System.out.println(e);

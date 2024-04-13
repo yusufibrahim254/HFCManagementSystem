@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fabe51ac-aacf-434b-badc-c88d6f1e5dc6" name="Changes" comment="added a couple cancel/back buttons">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="fabe51ac-aacf-434b-badc-c88d6f1e5dc6" name="Changes" comment="pay bill completed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/HFCAdminStaff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/HFCAdminStaff.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/HFCMember.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/HFCMember.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/HFCTrainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/HFCTrainer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,7 +142,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713039026012</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="pay bill completed">
+      <option name="closed" value="true" />
+      <created>1713042299249</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1713042299249</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,6 +165,18 @@
     <MESSAGE value="Session buttons done" />
     <MESSAGE value="Availability done" />
     <MESSAGE value="added a couple cancel/back buttons" />
-    <option name="LAST_COMMIT_MESSAGE" value="added a couple cancel/back buttons" />
+    <MESSAGE value="pay bill completed" />
+    <option name="LAST_COMMIT_MESSAGE" value="pay bill completed" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/HFCTrainer.java</url>
+          <line>58</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
