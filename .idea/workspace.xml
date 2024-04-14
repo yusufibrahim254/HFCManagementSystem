@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fabe51ac-aacf-434b-badc-c88d6f1e5dc6" name="Changes" comment="Trainer log in and homepage done">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Member.java" afterDir="false" />
+    <list default="true" id="fabe51ac-aacf-434b-badc-c88d6f1e5dc6" name="Changes" comment="staating adminsaff">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/HFCAdminStaff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/HFCAdminStaff.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/HFCTrainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/HFCTrainer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/HFCMember.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/HFCMember.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +41,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Reverting in main",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -175,6 +174,7 @@
     <MESSAGE value="added a couple cancel/back buttons" />
     <MESSAGE value="pay bill completed" />
     <MESSAGE value="Trainer log in and homepage done" />
-    <option name="LAST_COMMIT_MESSAGE" value="Trainer log in and homepage done" />
+    <MESSAGE value="staating adminsaff" />
+    <option name="LAST_COMMIT_MESSAGE" value="staating adminsaff" />
   </component>
 </project>

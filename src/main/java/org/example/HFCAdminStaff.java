@@ -234,34 +234,35 @@ public class HFCAdminStaff {
                             addRoomButton.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
+                                    JOptionPane.showMessageDialog(null, "Add Room functionality to be implemented in GUI but available in COMMANDLINE");
                                 }
                             });
 
                             removeRoomButton.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    JOptionPane.showMessageDialog(null, "Remove Room functionality to be implemented.");
+                                    JOptionPane.showMessageDialog(null, "Remove Room functionality to be implemented but available in COMMANDLINE");
                                 }
                             });
 
                             editRoomButton.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    JOptionPane.showMessageDialog(null, "Edit Room functionality to be implemented.");
+                                    JOptionPane.showMessageDialog(null, "Edit Room functionality to be implemented but available in COMMANDLINE");
                                 }
                             });
 
                             assignRoomButton.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    JOptionPane.showMessageDialog(null, "Assign Room to Booking functionality to be implemented.");
+                                    JOptionPane.showMessageDialog(null, "Assign Room to Booking functionality to be implemented but available in COMMANDLINE");
                                 }
                             });
 
                             viewRoomsButton.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    JOptionPane.showMessageDialog(null, "View Rooms functionality to be implemented.");
+                                    JOptionPane.showMessageDialog(null, "View Rooms functionality to be implemented but available in COMMANDLINE");
                                 }
                             });
 
@@ -278,17 +279,14 @@ public class HFCAdminStaff {
                     equipmentButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            //add equipment
-                            //remove equipment
-                            //view equipment
-                            //update maintenance
+                            JOptionPane.showMessageDialog(null, "Equipment functionality to be implemented in GUI but available in COMMANDLINE");
                         }
                     });
                     membersButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            //Billing
-                            //View all Members
+                            JOptionPane.showMessageDialog(null, "Members functionality to be implemented in GUI but available in COMMANDLINE");
+
                         }
                     });
                     staffPage.setJMenuBar(menuBar);
@@ -373,5 +371,178 @@ public class HFCAdminStaff {
             return false;
         }
     }
+    public static boolean addRoom(String roomName, int capacity, String description){
+        String SQL = "INSERT INTO Rooms (RoomName, Capacity, Description) VALUES (?, ?, ?)";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            pstmt.setString(1, roomName);
+            pstmt.setInt(2, capacity);
+            pstmt.setString(3, description);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+    public static boolean removeRoom(String roomName) {
+        String SQL = "DELETE FROM Rooms WHERE RoomName = ?";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            pstmt.setString(1, roomName);
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
 
+    public static boolean editRoom(String roomName, int newCapacity, String newDescription) {
+        String SQL = "UPDATE Rooms SET Capacity = ?, Description = ? WHERE RoomName = ?";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            pstmt.setInt(1, newCapacity);
+            pstmt.setString(2, newDescription);
+            pstmt.setString(3, roomName);
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+    public static boolean assignRoomToBooking(int bookingID, String roomName) {
+        String SQL = "UPDATE Bookings SET RoomName = ? WHERE BookingID = ?";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            pstmt.setString(1, roomName);
+            pstmt.setInt(2, bookingID);
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+    public static void viewAllRooms() {
+        String SQL = "SELECT * FROM Rooms";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String roomName = rs.getString("RoomName");
+                int capacity = rs.getInt("Capacity");
+                String description = rs.getString("Description");
+                System.out.println("Room Name: " + roomName + ", Capacity: " + capacity + ", Description: " + description);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    public static boolean addEquipment(String equipmentName, String description, boolean isFunctional) {
+        String SQL = "INSERT INTO Equipment (EquipmentName, Description, IsFunctional) VALUES (?, ?, ?)";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            pstmt.setString(1, equipmentName);
+            pstmt.setString(2, description);
+            pstmt.setBoolean(3, isFunctional);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+    public static boolean removeEquipment(String equipmentName) {
+        String SQL = "DELETE FROM Equipment WHERE EquipmentName = ?";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            pstmt.setString(1, equipmentName);
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+    public static void viewAllEquipment() {
+        String SQL = "SELECT * FROM Equipment";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String equipmentName = rs.getString("EquipmentName");
+                String description = rs.getString("Description");
+                boolean isFunctional = rs.getBoolean("IsFunctional");
+                System.out.println("Equipment Name: " + equipmentName + ", Description: " + description + ", Functional: " + isFunctional);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    public static boolean updateMaintenance(String equipmentName, boolean isFunctional) {
+        String SQL = "UPDATE Equipment SET IsFunctional = ? WHERE EquipmentName = ?";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            pstmt.setBoolean(1, isFunctional);
+            pstmt.setString(2, equipmentName);
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+    public static boolean editBilling(int memberId, double newAmount) {
+        String SQL = "UPDATE Billing SET Amount = ? WHERE MemberID = ?";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            pstmt.setDouble(1, newAmount);
+            pstmt.setInt(2, memberId);
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    public static void viewAllMembers() {
+        String SQL = "SELECT * FROM HFCMember";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            ResultSet rs = pstmt.executeQuery();
+            System.out.println("All Members:");
+            System.out.println("-------------");
+            while (rs.next()) {
+                int memberId = rs.getInt("MemberID");
+                String firstName = rs.getString("FirstName");
+                String lastName = rs.getString("LastName");
+                String email = rs.getString("Email");
+                int phone = rs.getInt("Phone");
+
+                System.out.println("Member ID: " + memberId);
+                System.out.println("Name: " + firstName + " " + lastName);
+                System.out.println("Email: " + email);
+                System.out.println("Phone: " + phone);
+                System.out.println("-------------");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 }
