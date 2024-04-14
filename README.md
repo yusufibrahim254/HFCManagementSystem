@@ -1,5 +1,4 @@
-## README: Assignment 3 JDBC Setup
-
+## README: Health and Fitness Club (HFC) Managemnent System - Setup
 1. **Setting up the Database:**
 
     - **Clone Repository:** 
