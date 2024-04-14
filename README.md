@@ -24,3 +24,5 @@
 2. **Demo Video:**
 
     - **Link:** [Final Project Demo](https://youtu.be/-UBGg2EcXWE)
+(Please play the video at a faster speed I was talking slow and didnt have time to rerecord before deadline)
+-thank you very much
