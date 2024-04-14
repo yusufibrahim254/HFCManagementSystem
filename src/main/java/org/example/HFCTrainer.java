@@ -4,12 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-public class HFCTrainer extends JFrame {
+public class HFCTrainer extends Member{
     private static int trainerID;
     private static String firstName;
     private static String lastName;
@@ -19,10 +21,10 @@ public class HFCTrainer extends JFrame {
     private static int phone;
 
     public HFCTrainer() {
-        setTitle("Trainer Page");
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setSize(500, 400);
-        setLocationRelativeTo(null);
+        JFrame trainerPage = new JFrame("Trainer Page");
+        trainerPage.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        trainerPage.setSize(500, 400);
+        trainerPage.setLocationRelativeTo(null);
 
         JFrame logInFrame = new JFrame("Log In");
         logInFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Dispose the frame on close
@@ -216,21 +218,264 @@ public class HFCTrainer extends JFrame {
                     startSessionButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                            JFrame sessionFrame = new JFrame("Start Training Session");
+                            sessionFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                            sessionFrame.setSize(500, 400);
+                            sessionFrame.setLocationRelativeTo(null);
 
+                            JPanel mainPanel = new JPanel();
+                            mainPanel.setLayout(new GridLayout(0, 1));
+
+                            String[] members = getAllMembers().toArray(new String[0]);
+
+                            String selectedUser = (String) JOptionPane.showInputDialog(null, "Select User:", "Start Session - With WHO?", JOptionPane.QUESTION_MESSAGE, null, members, members[0]);
+
+                            JButton viewProfileButton = new JButton("View Profile");
+                            JButton addRoutinesButton = new JButton("Add Routines");
+                            JButton addAchievementsButton = new JButton("Add Achievements");
+                            JButton viewHealthStatsButton = new JButton("View Health Statistics");
+
+                            viewProfileButton.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    String[] nameParts = selectedUser.split("\\s+");
+                                    String lastName = nameParts[1];
+
+                                    ArrayList<Member> members = setAllMembers();
+                                    for (Member member : members) {
+                                        if (member.getLastName().equals(lastName)) {
+                                            JOptionPane.showMessageDialog(null, "User Information:\n"
+                                                    + "First Name: " + member.getFirstName() + "\n"
+                                                    + "Last Name: " + member.getLastName() + "\n"
+                                                    + "Email: " + member.getEmail() + "\n"
+                                                    + "Address: " + member.getAddress() + "\n"
+                                                    + "City: " + member.getCity() + "\n"
+                                                    + "Province: " + member.getProvince() + "\n"
+                                                    + "Postal Code: " + member.getPostalCode() + "\n"
+                                                    + "Phone: " + member.getPhone() + "\n"
+                                                    + "Date of Birth: " + member.getDateOfBirth() + "\n"
+                                                    + "Fitness Goal: " + member.getFitnessGoal() + "\n"
+                                                    + "Weight Goal: " + member.getWeightGoal() + "\n"
+                                                    + "Time Goal: " + member.getTimeGoal() + "\n"
+                                                    + "Join Date: " + member.getJoinDate() + "\n"
+                                            );
+                                            return;
+                                        }
+                                    }
+                                    JOptionPane.showMessageDialog(null, "User not found.");
+                                }
+                            });
+
+                            addRoutinesButton.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    // Get the member's ID from the selected user
+                                    String[] nameParts = selectedUser.split("\\s+");
+                                    String firstName = nameParts[0];
+                                    String lastName = nameParts[1];
+                                    int memberID = getMemberIDByName(firstName, lastName);
+
+                                    JFrame addRoutineFrame = new JFrame("Add Routine");
+                                    addRoutineFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                                    addRoutineFrame.setSize(400, 300);
+                                    addRoutineFrame.setLocationRelativeTo(null);
+
+                                    JPanel inputPanel = new JPanel(new GridLayout(4, 2));
+
+                                    JTextField exerciseTypeField = new JTextField();
+                                    JTextField setsField = new JTextField();
+                                    JTextField repsField = new JTextField();
+
+                                    inputPanel.add(new JLabel("Exercise Type:"));
+                                    inputPanel.add(exerciseTypeField);
+                                    inputPanel.add(new JLabel("Sets:"));
+                                    inputPanel.add(setsField);
+                                    inputPanel.add(new JLabel("Reps:"));
+                                    inputPanel.add(repsField);
+
+                                    JButton confirmButton = new JButton("Add Routine");
+                                    confirmButton.addActionListener(new ActionListener() {
+                                        @Override
+                                        public void actionPerformed(ActionEvent e) {
+                                            String exerciseType = exerciseTypeField.getText();
+                                            int sets = Integer.parseInt(setsField.getText());
+                                            int reps = Integer.parseInt(repsField.getText());
+
+                                            if (exerciseType.isEmpty()) {
+                                                JOptionPane.showMessageDialog(addRoutineFrame, "Please enter the exercise type.");
+                                                return;
+                                            }
+
+                                            if (insertRoutine(memberID, exerciseType, sets, reps)) {
+                                                JOptionPane.showMessageDialog(addRoutineFrame, "Routine added successfully.");
+                                            } else {
+                                                JOptionPane.showMessageDialog(addRoutineFrame, "Failed to add routine. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                                            }
+                                            addRoutineFrame.dispose();
+                                        }
+                                    });
+
+                                    addRoutineFrame.add(inputPanel, BorderLayout.CENTER);
+                                    addRoutineFrame.add(confirmButton, BorderLayout.SOUTH);
+
+                                    addRoutineFrame.setVisible(true);
+                                }
+                            });
+
+                            addAchievementsButton.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    // Get the member's ID from the selected user
+                                    String[] nameParts = selectedUser.split("\\s+");
+                                    String firstName = nameParts[0];
+                                    String lastName = nameParts[1];
+                                    int memberID = getMemberIDByName(firstName, lastName);
+
+                                    // Create a dialog for adding achievements
+                                    JFrame addAchievementFrame = new JFrame("Add Achievement");
+                                    addAchievementFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                                    addAchievementFrame.setSize(400, 200);
+                                    addAchievementFrame.setLocationRelativeTo(null);
+
+                                    // Panel to hold input fields
+                                    JPanel inputPanel = new JPanel(new GridLayout(2, 2));
+
+                                    JTextField achievementField = new JTextField();
+
+                                    inputPanel.add(new JLabel("Achievement:"));
+                                    inputPanel.add(achievementField);
+
+                                    // Button to confirm achievement addition
+                                    JButton confirmButton = new JButton("Add Achievement");
+                                    confirmButton.addActionListener(new ActionListener() {
+                                        @Override
+                                        public void actionPerformed(ActionEvent e) {
+                                            // Get user input
+                                            String achievement = achievementField.getText();
+
+                                            // Validate input
+                                            if (achievement.isEmpty()) {
+                                                JOptionPane.showMessageDialog(addAchievementFrame, "Please enter the achievement.");
+                                                return;
+                                            }
+
+                                            // Insert achievement into database
+                                            if (insertAchievement(memberID, achievement)) {
+                                                JOptionPane.showMessageDialog(addAchievementFrame, "Achievement added successfully.");
+                                                // Optionally update any GUI elements to reflect the new achievement
+                                            } else {
+                                                JOptionPane.showMessageDialog(addAchievementFrame, "Failed to add achievement. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                                            }
+
+                                            // Close the dialog
+                                            addAchievementFrame.dispose();
+                                        }
+                                    });
+
+                                    // Add components to the frame
+                                    addAchievementFrame.add(inputPanel, BorderLayout.CENTER);
+                                    addAchievementFrame.add(confirmButton, BorderLayout.SOUTH);
+
+                                    // Make the frame visible
+                                    addAchievementFrame.setVisible(true);
+                                }
+                            });
+
+                            viewHealthStatsButton.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    String weightInput = JOptionPane.showInputDialog(null, "Enter the user's current weight (in kilograms):");
+                                    if (weightInput == null) {
+                                        return; // If cancel is clicked, return without further action
+                                    }
+                                    double weight = Double.parseDouble(weightInput);
+
+                                    String heightInput = JOptionPane.showInputDialog(null, "Enter the user's current height (in meters):");
+                                    if (heightInput == null) {
+                                        return; // If cancel is clicked, return without further action
+                                    }
+                                    double height = Double.parseDouble(heightInput);
+
+                                    double bmi = weight / (height * height);
+                                        String message = "Data:\n"
+                                                + "First Name: " + firstName + "\n"
+                                                + "Last Name: " + lastName + "\n"
+                                                + "Weight: " + weight + " kg\n"
+                                                + "Height: " + height + " meters\n"
+                                                + "BMI: " + bmi + "\n";
+                                        JOptionPane.showMessageDialog(null, message, "Entered Data", JOptionPane.INFORMATION_MESSAGE);
+                                    }
+                            });
+
+                            mainPanel.add(viewProfileButton);
+                            mainPanel.add(addRoutinesButton);
+                            mainPanel.add(addAchievementsButton);
+                            mainPanel.add(viewHealthStatsButton);
+
+                            sessionFrame.add(mainPanel);
+                            sessionFrame.setVisible(true);
                         }
                     });
 
                     viewMembersButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                            ArrayList<Member> members = setAllMembers();
 
+                            if (members.isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "No members found.", "No Members", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                StringBuilder memberInfo = new StringBuilder();
+                                for (Member member : members) {
+                                    memberInfo.append("Member ID: ").append(member.getMemberID()).append("\n");
+                                    memberInfo.append("Name: ").append(member.getFirstName()).append(" ").append(member.getLastName()).append("\n");
+                                    memberInfo.append("Email: ").append(member.getEmail()).append("\n");
+                                    memberInfo.append("Fitness Goal: ").append(member.getFitnessGoal()).append("\n\n");
+                                }
+                                JOptionPane.showMessageDialog(null, memberInfo.toString(), "Members Information", JOptionPane.INFORMATION_MESSAGE);
+                            }
                         }
                     });
 
                     availabilityTool.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                            JFrame availabilityFrame = new JFrame("Set Availability");
+                            availabilityFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                            availabilityFrame.setSize(500, 400);
+                            availabilityFrame.setLocationRelativeTo(null);
 
+                            JPanel panel = new JPanel(new GridLayout(4, 2));
+
+                            JLabel weekdayLabel = new JLabel("Select weekday:");
+                            JComboBox<HFCMember.Weekday> weekdayDropdown = new JComboBox<>(HFCMember.Weekday.values());
+
+                            JButton setAvailabilityButton = new JButton("Set Availability");
+                            JButton cancelButton = new JButton("Cancel");
+
+                            setAvailabilityButton.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    HFCMember.Weekday selectedWeekday = (HFCMember.Weekday) weekdayDropdown.getSelectedItem();
+
+                                    setAvailability(selectedWeekday.toString());
+                                    availabilityFrame.dispose();
+                                }
+                            });
+                            cancelButton.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    availabilityFrame.dispose();
+                                }
+                            });
+
+                            panel.add(weekdayLabel);
+                            panel.add(weekdayDropdown);
+                            panel.add(setAvailabilityButton);
+                            panel.add(cancelButton);
+
+                            availabilityFrame.add(panel);
+                            availabilityFrame.setVisible(true);
                         }
                     });
                     trainerPage.setJMenuBar(menuBar);
@@ -287,8 +532,8 @@ public class HFCTrainer extends JFrame {
         }
     }
     public static boolean updateTrainerDetails(String newFirstName, String newLastName, String newEmail, String newSpecialization, String newCertification, int newPhone) {
-        String updateQuery = "UPDATE HFCTrainer SET firstName = ?, lastName = ?, email = ?, specialization = ?, certification = ?, phone = ? WHERE email = ?";
-        try (PreparedStatement pstmt = Main.conn.prepareStatement(updateQuery)) {
+        String SQL = "UPDATE HFCTrainer SET firstName = ?, lastName = ?, email = ?, specialization = ?, certification = ?, phone = ? WHERE email = ?";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
             pstmt.setString(1, newFirstName);
             pstmt.setString(2, newLastName);
             pstmt.setString(3, newEmail);
@@ -304,20 +549,128 @@ public class HFCTrainer extends JFrame {
             return false;
         }
     }
+    public static ArrayList<String> getAllMembers() {
+        ArrayList<String> userList = new ArrayList<>();
+        String SQL = "SELECT FirstName, LastName FROM HFCMember";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                String firstName = rs.getString("FirstName");
+                String lastName = rs.getString("LastName");
+                String fullName = firstName + " " + lastName;
+                userList.add(fullName);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return userList;
+    }
+
+    public ArrayList<Member> setAllMembers() {
+        ArrayList<Member> memberList = new ArrayList<>();
+        String SQL = "SELECT * FROM HFCMember ";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                Member member = new Member();
+                member.setMemberID(rs.getInt("MemberID"));
+                member.setFirstName(rs.getString("FirstName"));
+                member.setLastName(rs.getString("LastName"));
+                member.setEmail(rs.getString("Email"));
+                member.setAddress(rs.getString("Address"));
+                member.setCity(rs.getString("City"));
+                member.setProvince(rs.getString("Province"));
+                member.setPostalCode(rs.getString("PostalCode"));
+                member.setPhone(rs.getString("Phone"));
+                member.setDateOfBirth(rs.getDate("DOB"));
+                member.setFitnessGoal(rs.getString("FitnessGoal"));
+                member.setWeightGoal(rs.getDouble("WeightGoal"));
+                member.setTimeGoal(rs.getString("TimeGoal"));
+                member.setJoinDate(rs.getDate("JoinDate"));
+                member.setTrainerID(rs.getInt("TrainerID"));
+                memberList.add(member);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return memberList;
+    }
+    private boolean insertRoutine(int memberID, String exerciseType, int sets, int reps) {
+        String SQL = "INSERT INTO ExerciseRoutine (MemberID, ExerciseType, Sets, Reps) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            pstmt.setInt(1, memberID);
+            pstmt.setString(2, exerciseType);
+            pstmt.setInt(3, sets);
+            pstmt.setInt(4, reps);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
+    public int getMemberIDByName(String firstName, String lastName) {
+        String query = "SELECT MemberID FROM HFCMember WHERE FirstName = ? AND LastName = ?";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(query)) {
+            pstmt.setString(1, firstName);
+            pstmt.setString(2, lastName);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("MemberID");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return -1;
+    }
+
+    public static boolean insertAchievement(int memberID, String achievement) {
+        String SQL = "INSERT INTO Achievements (MemberID, Achievement) VALUES (?, ?)";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            pstmt.setInt(1, memberID);
+            pstmt.setString(2, achievement);
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+    public static double getWeightGoalByMemberID(int memberID) {
+        double weightGoal = 0.0;
+        String SQL = "SELECT WeightGoal FROM HFCMember WHERE MemberID = ?";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            pstmt.setInt(1, memberID);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                weightGoal = rs.getDouble("WeightGoal");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return weightGoal;
+    }
+    public enum Weekday {
+        MONDAY,
+        TUESDAY,
+        WEDNESDAY,
+        THURSDAY,
+        FRIDAY,
+        SATURDAY,
+        SUNDAY
+    }
+    public static void setAvailability(String weekday) {
+        String SQL = "INSERT INTO TrainerAvailability (TrainerID, Weekday) VALUES (?, ?)";
+        try (PreparedStatement pstmt = Main.conn.prepareStatement(SQL)) {
+            pstmt.setInt(1, HFCTrainer.trainerID);
+            pstmt.setString(2, weekday);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 }
-                    //LOG IN
-                        //Start Training Session
-                            //With?
-                        //menubar -- Trainer Profile -- Log Out
-                            //View profile
-                            //add routines
-                            //add achievements
-                            //view health statistics
-                         //record session -- staff takes this and creates billing
-
-                        //View Your Members
-
-                        //Adjust your Availability
-
-
-
